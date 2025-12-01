@@ -1,0 +1,354 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    system-ui, sans-serif;
+  color: #222;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app {
+  width: 375px;
+  height: 812px;
+  background: url("icons/背景.png") center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 8px;
+}
+
+.icon-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.back-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.logo {
+  width: 44px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  padding: 0 24px;
+  gap: 12px;
+}
+
+.floor-visual {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  perspective: 1200px;
+  padding-top: 28px;
+}
+
+.floor-stack {
+  position: relative;
+  width: 260px;
+  height: 380px;
+  transform: scale(1.08);
+  transform-origin: center;
+  margin-left: 10px;
+}
+
+.floor-layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  --base-transform: translate(-50%, -50%);
+  transition: transform 0.25s ease, filter 0.25s ease,
+    box-shadow 0.25s ease, opacity 0.25s ease;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.08));
+  opacity: 0.78;
+  cursor: pointer;
+}
+
+.floor-layer img {
+  display: block;
+  width: 250px;
+  height: auto;
+}
+
+.floor-layer[data-floor="1"] {
+  --base-transform: translate(-50%, -50%) translateY(120px) rotateX(35deg)
+    scale(0.86);
+  transform: var(--base-transform);
+  z-index: 1;
+}
+
+.floor-layer[data-floor="2"] {
+  --base-transform: translate(-50%, -50%) translateY(85px) rotateX(35deg)
+    scale(0.88);
+  transform: var(--base-transform);
+  z-index: 2;
+}
+
+.floor-layer[data-floor="3"] {
+  --base-transform: translate(-50%, -50%) translateY(50px) rotateX(35deg)
+    scale(0.9);
+  transform: var(--base-transform);
+  z-index: 3;
+}
+
+.floor-layer[data-floor="4"] {
+  --base-transform: translate(-50%, -50%) translateY(15px) rotateX(35deg)
+    scale(0.92);
+  transform: var(--base-transform);
+  z-index: 4;
+}
+
+.floor-layer[data-floor="5"] {
+  --base-transform: translate(-50%, -50%) translateY(-20px) rotateX(35deg)
+    scale(0.94);
+  transform: var(--base-transform);
+  z-index: 5;
+}
+
+.floor-layer[data-floor="6"] {
+  --base-transform: translate(-50%, -50%) translateY(-55px) rotateX(35deg)
+    scale(0.96);
+  transform: var(--base-transform);
+  z-index: 6;
+}
+
+.floor-layer[data-floor="7"] {
+  --base-transform: translate(-50%, -50%) translateY(-90px) rotateX(35deg)
+    scale(0.98);
+  transform: var(--base-transform);
+  z-index: 7;
+}
+
+.floor-layer.is-active {
+  opacity: 1;
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.16));
+  transform: var(--base-transform) scale(1.08);
+}
+
+.floor-index {
+  width: 43px;
+  height: 319px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: 18px 0;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+  align-self: center;
+  margin-right: -24px; /* 抵消 app-main 右侧 padding，使其紧贴右边 */
+}
+
+.floor-index-item {
+  position: relative;
+  padding: 10px 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.floor-index-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 2px;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 1px;
+  background: #e5e7eb;
+  opacity: 0.7;
+}
+
+.floor-index-item:last-child::after {
+  display: none;
+}
+
+.floor-index-item.is-active {
+  color: #111827;
+  transform: scale(1.12);
+}
+
+.floor-index-item.is-active::after {
+  width: 22px;
+  height: 2px;
+  background: linear-gradient(90deg, #f97316, #facc15);
+  opacity: 1;
+}
+
+.info-panel {
+  margin-top: 12px;
+  padding: 18px 18px 90px;
+  border-radius: 32px 32px 0 0;
+  background: #ffffff;
+  box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.1);
+  height: 303px; /* 占整个 812 高度的 303/812 */
+  flex-shrink: 0;
+}
+
+.current-location {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.location-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: #f3f4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.06);
+}
+
+.location-icon img {
+  width: 32px;
+  height: 32px;
+}
+
+.location-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.location-subtitle {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.guess-title {
+  margin-top: 18px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.card-list {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  cursor: grab;
+  user-select: none;
+}
+
+.card-list::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.place-card {
+  flex: 0 0 132px; /* 101 * 1.3 ≈ 132 */
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  user-select: none;
+}
+
+.card-frame {
+  width: 132px; /* 等比例放大 1.3 倍 */
+  display: block;
+}
+
+.card-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  user-select: none;
+}
+
+.card-tag-icon {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 6px;
+}
+
+.card-title {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.card-room {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 12px;
+  pointer-events: none;
+}
+
+.home-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  pointer-events: auto;
+}
+
+.home-button img {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 360px) {
+  .floor-stack {
+    width: 190px;
+    height: 280px;
+  }
+
+  .floor-layer img {
+    width: 170px;
+  }
+}
+
+

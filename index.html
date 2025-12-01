@@ -1,12 +1,113 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>hello here is our website</h1>
-    <p>here is some content</p>
-</body>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>GAFA 楼层导览</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- 顶部栏 -->
+      <header class="app-header">
+        <button class="icon-button back-button" aria-label="返回">
+          <img src="icons/返回键.png" alt="返回" />
+        </button>
+        <img class="logo" src="icons/GAFA.png" alt="GAFA" />
+      </header>
+
+      <!-- 主体内容 -->
+      <main class="app-main">
+        <!-- 左侧楼层 3D 堆叠 -->
+        <section class="floor-visual">
+          <div class="floor-stack" id="floorStack">
+            <!-- 使用 JS 动态插入 1F-7F 图层 -->
+          </div>
+        </section>
+
+        <!-- 右侧楼层索引 -->
+        <aside class="floor-index" id="floorIndex" aria-label="楼层索引">
+          <!-- 使用 JS 动态插入 1F-7F 索引 -->
+        </aside>
+      </main>
+
+      <!-- 底部信息区域 -->
+      <section class="info-panel">
+        <div class="current-location">
+          <div class="location-icon">
+            <img src="icons/定位.png" alt="当前位置" />
+          </div>
+          <div class="location-text">
+            <div class="location-title">当前位置：A栋</div>
+            <div class="location-subtitle">Current location: Building A</div>
+          </div>
+        </div>
+
+        <div class="guess-title">猜你想去</div>
+
+        <div class="card-list">
+          <article class="place-card">
+            <img
+              class="card-frame"
+              src="icons/Frame.png"
+              alt="卡片背景"
+              aria-hidden="true"
+            />
+            <div class="card-content">
+              <img
+                class="card-tag-icon"
+                src="icons/MEETING.png"
+                alt="meeting"
+              />
+              <div class="card-title">工业设计会议室</div>
+              <div class="card-room">A306</div>
+            </div>
+          </article>
+
+          <article class="place-card">
+            <img
+              class="card-frame"
+              src="icons/Frame.png"
+              alt="卡片背景"
+              aria-hidden="true"
+            />
+            <div class="card-content">
+              <img
+                class="card-tag-icon"
+                src="icons/OFFICE.png"
+                alt="office"
+              />
+              <div class="card-title">湾区创新办公室</div>
+              <div class="card-room">A403</div>
+            </div>
+          </article>
+
+          <article class="place-card">
+            <img
+              class="card-frame"
+              src="icons/Frame.png"
+              alt="卡片背景"
+              aria-hidden="true"
+            />
+            <div class="card-content">
+              <img class="card-tag-icon" src="icons/HALL.png" alt="hall" />
+              <div class="card-title">视觉设计展厅</div>
+              <div class="card-room">A502</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 底部导航 -->
+      <nav class="bottom-nav">
+        <button class="icon-button home-button" aria-label="首页">
+          <img src="icons/Home icon.png" alt="首页" />
+        </button>
+      </nav>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
 </html>
+
+
