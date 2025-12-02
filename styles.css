@@ -150,6 +150,7 @@ body {
   opacity: 1;
   filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.16));
   transform: var(--base-transform) scale(1.08);
+  animation: floor-shake 0.24s ease;
 }
 
 .floor-index {
@@ -338,6 +339,45 @@ body {
 .home-button img {
   width: 24px;
   height: 24px;
+}
+
+.card-list.is-dragging {
+  cursor: grabbing;
+}
+
+.card-list.is-bounce {
+  animation: card-bounce 0.28s cubic-bezier(0.25, 1.3, 0.5, 1);
+}
+
+@keyframes card-bounce {
+  0% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(10px);
+  }
+  70% {
+    transform: translateX(-6px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes floor-shake {
+  0%,
+  100% {
+    transform: var(--base-transform) scale(1.08);
+  }
+  25% {
+    transform: var(--base-transform) translateX(-6px) scale(1.08);
+  }
+  50% {
+    transform: var(--base-transform) translateX(4px) scale(1.08);
+  }
+  75% {
+    transform: var(--base-transform) translateX(-2px) scale(1.08);
+  }
 }
 
 @media (max-width: 360px) {

@@ -95,14 +95,28 @@ function bindInteractions() {
       scrollLeft = cardList.scrollLeft;
     });
 
-    document.addEventListener("mouseup", () => {
+    const endDrag = () => {
       isDown = false;
       cardList.classList.remove("is-dragging");
-    });
+
+      // 只有拉到边缘（最左或最右）时才触发回弹效果
+      const maxScrollLeft = cardList.scrollWidth - cardList.clientWidth;
+      const atLeftEdge = cardList.scrollLeft <= 0;
+      const atRightEdge = cardList.scrollLeft >= maxScrollLeft - 1;
+
+      if (atLeftEdge || atRightEdge) {
+        cardList.classList.add("is-bounce");
+        setTimeout(() => {
+          cardList.classList.remove("is-bounce");
+        }, 300);
+      }
+    };
+
+    document.addEventListener("mouseup", endDrag);
 
     cardList.addEventListener("mouseleave", () => {
-      isDown = false;
-      cardList.classList.remove("is-dragging");
+      if (!isDown) return;
+      endDrag();
     });
 
     cardList.addEventListener("mousemove", (e) => {
