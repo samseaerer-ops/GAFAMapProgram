@@ -65,14 +65,16 @@ body {
   align-items: flex-start;
   justify-content: flex-start;
   perspective: 1200px;
-  padding-top: 28px;
+  /* 再整体上移一点，但保持现在的尺寸和间距不变 */
+  padding-top: 2px;
 }
 
 .floor-stack {
   position: relative;
   width: 260px;
   height: 380px;
-  transform: scale(1.08);
+  /* 整体堆叠放大到原先的大约 1.7 倍，再略微放大一点 */
+  transform: scale(1.7);
   transform-origin: center;
   margin-left: 10px;
 }
@@ -91,57 +93,64 @@ body {
   cursor: pointer;
 }
 
+/* 非选中楼层：轻微模糊并降低透明度（弱一点，不要太糊） */
+.floor-layer:not(.is-active) {
+  opacity: 0.8;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.08)) blur(0.4px);
+}
+
 .floor-layer img {
   display: block;
-  width: 250px;
+  /* 楼层平面图整体略微放大一些 */
+  width: 270px;
   height: auto;
 }
 
 .floor-layer[data-floor="1"] {
-  --base-transform: translate(-50%, -50%) translateY(120px) rotateX(35deg)
-    scale(0.86);
+  --base-transform: translate(-50%, -50%) translateY(110px) rotateX(35deg)
+    scale(0.9);
   transform: var(--base-transform);
   z-index: 1;
 }
 
 .floor-layer[data-floor="2"] {
-  --base-transform: translate(-50%, -50%) translateY(85px) rotateX(35deg)
-    scale(0.88);
+  --base-transform: translate(-50%, -50%) translateY(82px) rotateX(35deg)
+    scale(0.9);
   transform: var(--base-transform);
   z-index: 2;
 }
 
 .floor-layer[data-floor="3"] {
-  --base-transform: translate(-50%, -50%) translateY(50px) rotateX(35deg)
+  --base-transform: translate(-50%, -50%) translateY(54px) rotateX(35deg)
     scale(0.9);
   transform: var(--base-transform);
   z-index: 3;
 }
 
 .floor-layer[data-floor="4"] {
-  --base-transform: translate(-50%, -50%) translateY(15px) rotateX(35deg)
-    scale(0.92);
+  --base-transform: translate(-50%, -50%) translateY(26px) rotateX(35deg)
+    scale(0.9);
   transform: var(--base-transform);
   z-index: 4;
 }
 
 .floor-layer[data-floor="5"] {
-  --base-transform: translate(-50%, -50%) translateY(-20px) rotateX(35deg)
-    scale(0.94);
+  --base-transform: translate(-50%, -50%) translateY(-2px) rotateX(35deg)
+    scale(0.9);
   transform: var(--base-transform);
   z-index: 5;
 }
 
 .floor-layer[data-floor="6"] {
-  --base-transform: translate(-50%, -50%) translateY(-55px) rotateX(35deg)
-    scale(0.96);
+  --base-transform: translate(-50%, -50%) translateY(-30px) rotateX(35deg)
+    scale(0.9);
   transform: var(--base-transform);
   z-index: 6;
 }
 
 .floor-layer[data-floor="7"] {
-  --base-transform: translate(-50%, -50%) translateY(-90px) rotateX(35deg)
-    scale(0.98);
+  --base-transform: translate(-50%, -50%) translateY(-58px) rotateX(35deg)
+    scale(0.9);
   transform: var(--base-transform);
   z-index: 7;
 }

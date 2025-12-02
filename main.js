@@ -12,7 +12,13 @@ function createFloorStack() {
     wrapper.dataset.floor = String(floor);
 
     const img = document.createElement("img");
-    img.src = `icons/${floor}F.png`;
+    // 优先使用楼层平面图中的图片；如果某层没有对应平面图，则退回 icons 中原来的图层线框
+    const mapPath = `楼层平面地图/${floor}F.png`;
+    const iconPath = `icons/${floor}F.png`;
+    img.src = mapPath;
+    img.onerror = () => {
+      img.src = iconPath;
+    };
     img.alt = `${floor}F 图层`;
 
     wrapper.appendChild(img);
@@ -63,22 +69,38 @@ function bindInteractions() {
   });
 
   index.addEventListener("mouseleave", () => {
-    setActiveFloor(1);
+    // 鼠标离开楼层索引后回到默认的 2F
+    setActiveFloor(2);
   });
 
   stack.addEventListener("mousemove", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
-    const layer =
-      target.classList.contains("floor-layer") ? target : target.parentElement;
-    if (!layer) return;
-    const floor = layer.dataset.floor;
+    const layers = Array.from(document.querySelectorAll(".floor-layer"));
+    if (!layers.length) return;
+
+    // 根据鼠标在堆叠区域中的垂直位置，选择距离最近的那一层
+    const clientY = event.clientY;
+    let closestLayer = null;
+    let closestDistance = Infinity;
+
+    layers.forEach((layer) => {
+      const rect = layer.getBoundingClientRect();
+      const centerY = (rect.top + rect.bottom) / 2;
+      const distance = Math.abs(centerY - clientY);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestLayer = layer;
+      }
+    });
+
+    if (!closestLayer) return;
+    const floor = closestLayer.dataset.floor;
     if (!floor) return;
     setActiveFloor(Number(floor));
   });
 
   stack.addEventListener("mouseleave", () => {
-    setActiveFloor(1);
+    // 鼠标离开楼层区域后回到默认的 2F
+    setActiveFloor(2);
   });
 
   // 卡片区域：支持鼠标拖拽横向滚动
@@ -96,6 +118,8 @@ function bindInteractions() {
     });
 
     const endDrag = () => {
+      // 只有确实从卡片区域拖动过，才触发回弹
+      if (!isDown) return;
       isDown = false;
       cardList.classList.remove("is-dragging");
 
@@ -132,7 +156,8 @@ function bindInteractions() {
 document.addEventListener("DOMContentLoaded", () => {
   createFloorStack();
   createFloorIndex();
-  setActiveFloor(1);
+  // 默认选中 2F
+  setActiveFloor(2);
   bindInteractions();
 });
 
