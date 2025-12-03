@@ -106,6 +106,16 @@ function bindInteractions() {
   // 卡片区域：支持鼠标拖拽横向滚动
   const cardList = document.querySelector(".card-list");
   if (cardList) {
+    // 卡片 hover 动效：通过类名控制，保证在某些环境下 hover 也生效
+    const cards = cardList.querySelectorAll(".place-card");
+    cards.forEach((card) => {
+      card.addEventListener("mouseenter", () => {
+        card.classList.add("card-hover");
+      });
+      card.addEventListener("mouseleave", () => {
+        card.classList.remove("card-hover");
+      });
+    });
     let isDown = false;
     let startX = 0;
     let scrollLeft = 0;
