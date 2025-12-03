@@ -1,0 +1,246 @@
+:root {
+  font-family: "PingFang SC", "Microsoft YaHei", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 仅 bg 页面使用：整页可点击，显示手型鼠标 */
+.bg-body {
+  cursor: pointer;
+}
+
+/* 把 375×812 画幅在大屏里居中 */
+.phone-shell {
+  width: 375px;
+  height: 812px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 仅 background 页面使用：在 375×812 画幅内允许上下滚动 */
+.scroll-shell {
+  overflow-y: auto;
+  align-items: flex-start; /* 从上方开始排布内容，便于向下滚动 */
+}
+
+/* 隐藏 background 页面中的滚动条，但仍保留滚轮滚动功能 */
+.scroll-shell {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.scroll-shell::-webkit-scrollbar {
+  display: none;             /* Chrome/Safari */
+}
+
+/* 真实画布：375×812，背景图 */
+.bg-page {
+  position: relative;
+  width: 375px;
+  height: 812px;
+  background-image: url("./背景图/背景图.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* background 页面中：背景容器高度随内容增加，配合滚动查看超出部分 */
+.bg-page-long {
+  height: auto;
+  min-height: 812px; /* 至少与画幅一样高 */
+}
+
+/* 二楼地图整体：居中稍微缩小 */
+.map-overview {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%; /* index 页面保持原来的大小 */
+  height: auto;
+  display: block;
+  z-index: 1;
+}
+
+/* 五楼地图容器：相对定位，用于放置可点击区域 */
+.map-container-5f {
+  position: relative;
+  width: 90%;
+  margin: 60px auto 40px;
+}
+
+/* background 页面中的五楼地图整体：略微放大，允许内容向下超出 */
+.map-overview-5f {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 只在 bg 页面使用的放大版本 */
+.map-overview-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* 回到中心放大效果 */
+  width: 90%;       /* bg 页面中的二楼地图整体稍微放大 */
+  height: auto;
+  display: block;
+  z-index: 1;
+}
+
+/* 左上角箭头图标 */
+.icon-arrow {
+  position: absolute;
+  top: 24px;
+  left: 18px;
+  width: 24px;  /* 不要太大 */
+  height: auto;
+  z-index: 3;
+}
+
+/* 右上角 GAFA 图标 */
+.icon-gafa {
+  position: absolute;
+  top: 24px;
+  right: 22px;
+  height: 20px; /* 控制高度，自动等比缩放 */
+  width: auto;
+  z-index: 3;
+}
+
+/* 只在 background 页面（scroll-shell 内）中，把箭头和 GAFA 稍微再往上提一点 */
+.scroll-shell .icon-arrow {
+  top: 16px;
+}
+
+.scroll-shell .icon-gafa {
+  top: 16px;
+}
+
+/* 底部图标容器：中下方 */
+.bottom-icons {
+  position: absolute;
+  left: 50%;
+  bottom: 12px; /* 默认：靠近底部，避免与地图重合 */
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Home 和 Enlarge 之间的间距 */
+   z-index: 2; /* 确保在地图之上显示 */
+}
+
+/* 仅 background 页面中：让 Home 和 Enlarge 稍微再往下靠一点，但不超出画幅 */
+.scroll-shell .bottom-icons {
+  bottom: 4px;
+}
+
+/* Home 与 Enlarge 图标同尺寸 */
+.icon-home,
+.icon-enlarge {
+  width: 32px;
+  height: auto;
+  display: block;
+}
+
+/* 教室可点击链接样式 */
+.classroom-link {
+  position: absolute;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 10; /* 提高z-index确保在最上层 */
+  background: transparent;
+  border: none;
+  pointer-events: auto; /* 确保可以接收点击事件 */
+}
+
+/* A522 教室链接位置 - 需要根据实际地图调整位置和大小 */
+.classroom-a522 {
+  /* 这些值需要根据A522在地图上的实际位置调整 */
+  /* top 和 left 是相对于地图容器的百分比位置 */
+  top: 45%;
+  left: 30%;
+  width: 60px; /* 增大点击区域 */
+  height: 40px; /* 增大点击区域 */
+  /* 临时调试：取消下面的注释可以看到点击区域的位置 */
+  /* border: 2px solid red;
+  background: rgba(255, 0, 0, 0.2); */
+}
+
+.classroom-label {
+  display: none; /* 隐藏标签，因为A522已经在地图图片上显示 */
+}
+
+/* 五楼页面热点提示 */
+.map-hotspot {
+  display: none;
+}
+
+.map-hotspot.visible {
+  display: none;
+}
+
+/* A522 实景页面 */
+.classroom-photo-frame {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.classroom-photo-full {
+  width: 100%;
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  display: block;
+}
+
+.classroom-chip {
+  position: static;
+  background: #fff;
+  border-radius: 999px;
+  padding: 10px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.classroom-chip-code {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
+}
+
+.classroom-chip-name {
+  font-size: 16px;
+  color: #000;
+}
+
+.icon-arrow-button {
+  cursor: pointer;
+}
+
+

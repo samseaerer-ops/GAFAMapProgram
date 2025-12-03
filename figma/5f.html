@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>背景图页面</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- 外层：把 375×812 画幅在电脑上居中展示 -->
+    <!-- 在这个页面中，内容可以在 375×812 画幅内上下滚动 -->
+    <div class="phone-shell scroll-shell">
+      <!-- 真实画布：背景图 + 五楼地图整体，超出部分可滚动查看 -->
+      <div class="bg-page bg-page-long">
+        <!-- 左上角返回箭头，与 index 页面位置一致 -->
+        <img class="icon-arrow" src="./UI/arrow.png" alt="Arrow" />
+
+        <!-- 右上角 GAFA 标志，与 index 页面位置一致 -->
+        <img class="icon-gafa" src="./UI/GAFA.png" alt="GAFA" />
+
+        <!-- 五楼地图整体：大小与 index 中二楼地图一致（宽度 80%） -->
+        <div class="map-container-5f">
+          <img
+            class="map-overview-5f"
+            id="map-5f"
+            src="./楼层地图整体/五楼地图整体.png"
+            alt="五楼地图整体"
+            usemap="#map5f"
+          />
+          <!-- 图片映射：定义可点击区域 -->
+          <map name="map5f">
+            <area 
+              shape="rect" 
+              coords="0,0,100,100" 
+              href="./a522.html" 
+              target="_self"
+              alt="A522"
+              id="area-a522"
+            />
+            <area 
+              shape="rect" 
+              coords="0,0,100,100" 
+              href="./a520.html" 
+              target="_self"
+              alt="A520"
+              id="area-a520"
+            />
+          </map>
+        </div>
+
+        <!-- 底部中间仅保留 Home 图标 -->
+        <div class="bottom-icons">
+          <img class="icon-home" src="./UI/Home icon.png" alt="Home" />
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const mapImg = document.getElementById('map-5f');
+        const mapContainer = document.querySelector('.map-container-5f');
+
+        if (!mapImg || !mapContainer) return;
+
+        const hotspots = [
+          {
+            key: 'a522',
+            link: './a522.html',
+            defaults: { left: 0.7, top: 0, size: 0.3 },
+          },
+          {
+            key: 'a520',
+            link: './a520.html',
+            defaults: { left: 0.7, top: 0.32, size: 0.3 },
+          },
+        ];
+
+        const overlays = {};
+        const dimensions = {};
+        const areas = {};
+
+        mapContainer.style.position = 'relative';
+
+        hotspots.forEach((hotspot) => {
+          const overlay = document.createElement('div');
+          overlay.className = 'map-hotspot';
+          mapContainer.appendChild(overlay);
+          overlays[hotspot.key] = overlay;
+          areas[hotspot.key] = document.getElementById(`area-${hotspot.key}`);
+        });
+
+        function setupHotspots() {
+          const imgWidth = mapImg.offsetWidth;
+          const imgHeight = mapImg.offsetHeight;
+
+          hotspots.forEach((hotspot) => {
+            let { left, top, size } = hotspot.defaults;
+            let leftPx = Math.floor(imgWidth * left);
+            let sizePx = Math.floor(imgWidth * size);
+            let topPx = Math.floor(imgHeight * top);
+
+            if (hotspot.key === 'a520' && dimensions['a522']) {
+              topPx = dimensions['a522'].bottom + 1;
+              sizePx = Math.min(sizePx, imgHeight - topPx);
+            }
+
+            if (topPx + sizePx > imgHeight) {
+              topPx = Math.max(0, imgHeight - sizePx);
+            }
+
+            dimensions[hotspot.key] = {
+              left: leftPx,
+              top: topPx,
+              right: leftPx + sizePx,
+              bottom: topPx + sizePx,
+            };
+
+            const overlay = overlays[hotspot.key];
+            overlay.style.left = `${leftPx}px`;
+            overlay.style.top = `${topPx}px`;
+            overlay.style.width = `${sizePx}px`;
+            overlay.style.height = `${sizePx}px`;
+
+            const area = areas[hotspot.key];
+            if (area) {
+              area.coords = `${leftPx},${topPx},${leftPx + sizePx},${topPx + sizePx}`;
+            }
+          });
+
+          setActiveHotspot(null);
+        }
+
+        function setActiveHotspot(activeKey) {
+          hotspots.forEach((hotspot) => {
+            overlays[hotspot.key].classList.toggle(
+              'visible',
+              hotspot.key === activeKey
+            );
+          });
+          mapImg.style.cursor = activeKey ? 'pointer' : 'default';
+        }
+
+        function findHotspot(x, y) {
+          return hotspots.find((hotspot) => {
+            const area = dimensions[hotspot.key];
+            if (!area) return false;
+            return (
+              x >= area.left &&
+              x <= area.right &&
+              y >= area.top &&
+              y <= area.bottom
+            );
+          });
+        }
+
+        mapImg.addEventListener('mousemove', (event) => {
+          const rect = mapImg.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+
+          const hotspot = findHotspot(x, y);
+          setActiveHotspot(hotspot ? hotspot.key : null);
+        });
+
+        mapImg.addEventListener('mouseleave', () => setActiveHotspot(null));
+
+        mapImg.addEventListener('click', (event) => {
+          const rect = mapImg.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+
+          const hotspot = findHotspot(x, y);
+          if (hotspot) {
+            event.preventDefault();
+            window.location.href = hotspot.link;
+          }
+        });
+
+        if (mapImg.complete) {
+          setupHotspots();
+        } else {
+          mapImg.addEventListener('load', setupHotspots);
+        }
+      });
+    </script>
+  </body>
+</html>
+
+

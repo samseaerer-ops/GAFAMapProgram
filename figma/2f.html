@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2F 楼层</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- 外层只负责把 375×812 画幅居中，方便在电脑上预览 -->
+    <div class="phone-shell">
+      <!-- 真正画布：375×812，背景图 + 二楼地图整体 + 底部图标 -->
+      <div class="bg-page">
+        <!-- 左上角返回箭头 -->
+        <img class="icon-arrow" src="./UI/arrow.png" alt="Arrow" />
+
+        <!-- 右上角 GAFA 标志 -->
+        <img class="icon-gafa" src="./UI/GAFA.png" alt="GAFA" />
+
+        <!-- 二楼地图整体 -->
+        <img
+          class="map-overview"
+          src="./楼层地图整体/二楼地图整体.png"
+          alt="二楼地图整体"
+        />
+
+        <!-- 底部仅保留 Home 图标 -->
+        <div class="bottom-icons">
+          <img class="icon-home" src="./UI/Home icon.png" alt="Home" />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+
